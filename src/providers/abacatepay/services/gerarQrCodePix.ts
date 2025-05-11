@@ -1,7 +1,6 @@
 import { PixResponse, RealizarPagamentoPix } from "../interfaces/pix";
 import axios from "axios";
 import { ABACATE_PAY_API_URL } from "../const/abacate";
-import dotenv from "dotenv";
 
 
 const gerarQrCodePix = async (token: string, {
@@ -56,7 +55,7 @@ export const generatePix = async ({
   if (!pix) {
     console.log("Erro ao gerar o QR Code.");
   } else {
-    console.log("QR Code gerado:", pix);
+    console.log("QR Code gerado:");
   }
 
   return pix;
