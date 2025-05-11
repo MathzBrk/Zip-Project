@@ -9,15 +9,15 @@ datasource db {
 }
 
 model Usuario {
-  id         String   @id @default(uuid())
+  id         String    @id @default(uuid())
   nome       String
-  email      String   @unique
+  email      String    @unique
   senha      String
-  endereco   Endereco @relation(fields: [enderecoId], references: [id])
-  enderecoId String   @unique
+  endereco   Enderecos @relation(fields: [enderecoId], references: [id])
+  enderecoId String    @unique
 }
 
-model Endereco {
+model Enderecos {
   id      String   @id @default(uuid())
   rua     String
   numero  String
@@ -25,22 +25,22 @@ model Endereco {
   usuario Usuario?
 }
 
-model Pedido {
-  id               String           @id @default(uuid())
+model Pedidos {
+  id               String            @id @default(uuid())
   valor            Int
-  formaDePagamento FormaDePagamento
+  formaDePagamento FormasDePagamento
   clientName       String
-  data             DateTime         @default(now())
+  data             DateTime          @default(now())
 }
 
-model Produto {
+model Produtos {
   id                String @id @default(uuid())
   nome              String
   preco             Int
   quantidadeEstoque Int
 }
 
-enum FormaDePagamento {
+enum FormasDePagamento {
   PIX
   DINHEIRO
   CREDITO
