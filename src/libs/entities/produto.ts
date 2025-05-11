@@ -6,6 +6,12 @@ export interface DadosCadastroProduto {
     quantidadeEstoque: number;
 }
 
+export interface ProductResponse {
+    id: string;
+    nome: string;
+    preco: number;
+}
+
 export class Produto {
     private readonly id: string;
     private nome: string;
@@ -37,11 +43,36 @@ export class Produto {
         this.nome = nome.trim();
     }
 
-    private setQuantidadeEstoque(quantidadeEstoque: number) {
+    public reduzirQuantidadeDeEstoque(quantidade: number): void {
+        if (quantidade <= 0) {
+            throw new Error("A quantidade a ser reduzida deve ser maior que zero.");
+        }
+        if (this.quantidadeEstoque < quantidade) {
+            throw new Error("Estoque insuficiente.");
+        }
+        this.quantidadeEstoque -= quantidade;
+    }
+
+    public aumentarQuantidadeDeEstoque(quantidade: number): void {
+    if (quantidade <= 0) {
+        throw new Error("A quantidade deve ser maior que zero.");
+    }
+    this.quantidadeEstoque += quantidade;
+}
+
+    public setQuantidadeEstoque(quantidadeEstoque: number) {
         if(quantidadeEstoque <= 0) {
             throw new Error(`Quantidade do produto ${this.nome} não pode ser menor ou igual a 0!`)
         }
         this.quantidadeEstoque = quantidadeEstoque;
+    }
+
+    public getQuantidadeEstoque() {
+        if(this.quantidadeEstoque < 0) {
+            throw new Error(`Quantidade do produto ${this.nome} não pode ser menor ou igual a 0!`)
+        }
+
+        return this.quantidadeEstoque;
     }
 
     public getId(): string {
