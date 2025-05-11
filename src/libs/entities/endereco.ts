@@ -5,22 +5,42 @@ export interface EnderecoProps {
 }
 
 export class Endereco {
-    private rua: string;
-    private numero: string;
-    private cidade: string;
+    private readonly rua: string;
+    private readonly numero: string;
+    private readonly cidade: string;
 
-    private constructor(props: EnderecoProps){
-      this.rua = props.rua;
-      this.numero = props.numero;
-      this.cidade = props.cidade;
-
+    private constructor(props: EnderecoProps) {
+        this.validar(props);
+        this.rua = props.rua.trim();
+        this.numero = props.numero.trim();
+        this.cidade = props.cidade.trim();
     }
 
     public static create(props: EnderecoProps): Endereco {
-        return new Endereco({
-            rua: props.rua,
-            numero: props.numero,
-            cidade: props.cidade
-        });
+        return new Endereco(props);
     }
-  }
+
+    private validar(props: EnderecoProps): void {
+        if (!props.rua || props.rua.trim().length === 0) {
+            throw new Error("Rua é obrigatória.");
+        }
+        if (!props.numero || props.numero.trim().length === 0) {
+            throw new Error("Número é obrigatório.");
+        }
+        if (!props.cidade || props.cidade.trim().length === 0) {
+            throw new Error("Cidade é obrigatória.");
+        }
+    }
+
+    public getRua(): string {
+        return this.rua;
+    }
+
+    public getNumero(): string {
+        return this.numero;
+    }
+
+    public getCidade(): string {
+        return this.cidade;
+    }
+}

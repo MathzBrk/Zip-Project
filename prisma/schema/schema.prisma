@@ -1,0 +1,48 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["driverAdapters"]
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:../../data/dev.db"
+}
+
+model Usuario {
+  id         String   @id @default(uuid())
+  nome       String
+  email      String   @unique
+  senha      String
+  endereco   Endereco @relation(fields: [enderecoId], references: [id])
+  enderecoId String   @unique
+}
+
+model Endereco {
+  id      String   @id @default(uuid())
+  rua     String
+  numero  String
+  cidade  String
+  usuario Usuario?
+}
+
+model Pedido {
+  id               String           @id @default(uuid())
+  valor            Int
+  formaDePagamento FormaDePagamento
+  clientName       String
+  data             DateTime         @default(now())
+}
+
+model Produto {
+  id                String @id @default(uuid())
+  nome              String
+  preco             Int
+  quantidadeEstoque Int
+}
+
+enum FormaDePagamento {
+  PIX
+  DINHEIRO
+  CREDITO
+  DEBITO
+}
