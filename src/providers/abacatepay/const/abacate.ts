@@ -1,0 +1,1 @@
+export const ABACATE_PAY_API_URL = 'https://api.abacatepay.com/v1'
