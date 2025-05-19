@@ -1,20 +1,29 @@
 import { v4 as uuidv4 } from 'uuid';
 import { Email } from './email';
 import { Senha } from './senha';
-import { Endereco } from './endereco';
+
+export interface UsuarioResponse {
+  id: string;
+  nome: string;
+  email: string;
+}
+
+export interface DadosCadastroUsuario {
+  nome: string;
+  email: string;
+  senha: string;
+}
 
 export class Usuario {
   private readonly id: string;
   private readonly nome: string;
   private readonly email: Email;
   private readonly senha: Senha;
-  private readonly endereco: Endereco;
 
   private constructor(
     nome: string,
     email: Email,
     senha: Senha,
-    endereco: Endereco,
     id?: string
   ) {
     this.validar(nome);
@@ -22,17 +31,15 @@ export class Usuario {
     this.nome = nome.trim();
     this.email = email;
     this.senha = senha;
-    this.endereco = endereco;
   }
 
   public static create(props: {
     nome: string;
     email: Email;
     senha: Senha;
-    endereco: Endereco;
     id?: string;
   }): Usuario {
-    return new Usuario(props.nome, props.email, props.senha, props.endereco, props.id);
+    return new Usuario(props.nome, props.email, props.senha, props.id);
   }
 
   private validar(nome: string): void {
@@ -53,11 +60,12 @@ export class Usuario {
     return this.email;
   }
 
+  public getEmailString(): string {
+    return this.email.getEmail();
+  }
+
   public getSenha(): Senha {
     return this.senha;
   }
 
-  public getEndereco(): Endereco {
-    return this.endereco;
-  }
 }

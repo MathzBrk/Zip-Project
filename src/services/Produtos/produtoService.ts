@@ -1,4 +1,4 @@
-import { DadosCadastroProduto, ProductResponse, Produto } from "../../libs/entities/produto";
+import { DadosCadastroProduto, ProductResponse, Produto } from "../../domain/entities/produto";
 import { ProdutoServicesUseCases } from "./interfaces/produtoServicesUseCases";
 import {IProdutoRepository} from '../../repositories/Produto/interfaces/produtoRepositoryInterface'
 import { IProdutoValidator } from "./validators/interfaces/IProdutoValidator";
@@ -10,12 +10,12 @@ export class ProdutoService implements ProdutoServicesUseCases{
         private produtoValidator: IProdutoValidator
         ){}
 
-    async cadastrarProduto(dados: DadosCadastroProduto): Promise<ProductResponse> {
+    async cadastrarProduto(userId: string, dados: DadosCadastroProduto): Promise<ProductResponse> {
         await this.produtoValidator.validarProduto(dados);
 
         const produto = new Produto(dados.nome, dados.preco, dados.quantidadeEstoque);
 
-        const produtoSalvo = await this.produtoRepository.cadastrar(produto);
+        const produtoSalvo = await this.produtoRepository.cadastrar(userId, produto);
     
         return {
             id: produtoSalvo.getId(),
@@ -24,8 +24,8 @@ export class ProdutoService implements ProdutoServicesUseCases{
         }
     }
 
-    async consultarProduto(produtoId: string): Promise<ProductResponse> {
-        const produto = await this.produtoRepository.encontrarPorId(produtoId);
+    async consultarProduto(userId: string, produtoId: string): Promise<ProductResponse> {
+        const produto = await this.produtoRepository.encontrarPorId(userId, produtoId);
 
         if (!produto) {
             throw new ProdutoNotFoundError(produtoId);
@@ -38,8 +38,8 @@ export class ProdutoService implements ProdutoServicesUseCases{
         };
     }
 
-    async consultarProdutos(): Promise<ProductResponse[]> {
-        const produtos = await this.produtoRepository.listarTodos();
+    async consultarProdutos(userId: string): Promise<ProductResponse[]> {
+        const produtos = await this.produtoRepository.listarTodos(userId);
 
         return produtos.map(produto => ({
             id: produto.getId(),
@@ -48,8 +48,8 @@ export class ProdutoService implements ProdutoServicesUseCases{
         }));
     }
 
-    async excluirProduto(produtoId: string): Promise<boolean> {
-        const produtoExcluido = await this.produtoRepository.deletar(produtoId);
+    async excluirProduto(userId: string, produtoId: string): Promise<boolean> {
+        const produtoExcluido = await this.produtoRepository.deletar(userId, produtoId);
 
         if(!produtoExcluido) {
             throw new ProdutoNotFoundError(produtoId);
@@ -58,8 +58,8 @@ export class ProdutoService implements ProdutoServicesUseCases{
         return true;
     }
 
-    async aumentarQuantidadeDoEstoque(productId: string, quantidade: number): Promise<void> {
-        const produto = await this.produtoRepository.encontrarPorId(productId);
+    async aumentarQuantidadeDoEstoque(userId: string, productId: string, quantidade: number): Promise<void> {
+        const produto = await this.produtoRepository.encontrarPorId(userId, productId);
 
         if(!produto) {
             throw new ProdutoNotFoundError(productId);
@@ -67,11 +67,11 @@ export class ProdutoService implements ProdutoServicesUseCases{
 
         produto.aumentarQuantidadeDeEstoque(quantidade);
 
-        await this.produtoRepository.atualizar(produto);
+        await this.produtoRepository.atualizar(userId, produto);
     }
 
-    async diminuirQuantidadeDoEstoque(productId: string, quantidade: number): Promise<void> {
-        const produto = await this.produtoRepository.encontrarPorId(productId);
+    async diminuirQuantidadeDoEstoque(userId: string, productId: string, quantidade: number): Promise<void> {
+        const produto = await this.produtoRepository.encontrarPorId(userId, productId);
 
         if(!produto) {
             throw new ProdutoNotFoundError(productId);
@@ -79,6 +79,6 @@ export class ProdutoService implements ProdutoServicesUseCases{
 
         produto.reduzirQuantidadeDeEstoque(quantidade);
 
-        await this.produtoRepository.atualizar(produto);
+        await this.produtoRepository.atualizar(userId, produto);
     }
 }
