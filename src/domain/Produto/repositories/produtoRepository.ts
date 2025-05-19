@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-import { Produto } from "../../domain/entities/produto";
+import { Produto } from "../entities/produto";
 import { IProdutoRepository } from "./interfaces/produtoRepositoryInterface";
 
 export class ProdutoRepository implements IProdutoRepository {

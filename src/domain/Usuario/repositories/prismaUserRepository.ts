@@ -1,8 +1,8 @@
-import { PrismaClient, Tenant } from "@prisma/client";
-import { IUserRepository } from "./interfaces/userRepositoryMethods";
-import { Usuario, UsuarioResponse } from "../../domain/entities/usuario";
-import { Email } from "../../domain/entities/email";
-import { Senha } from "../../domain/entities/senha";
+import { PrismaClient } from "@prisma/client";
+import { IUserRepository } from "../../Usuario/repositories/interfaces/userRepositoryMethods";
+import { Email } from "../../Usuario/entities/email";
+import { Senha } from "../../Usuario/entities/senha";
+import { Usuario } from "../entities/usuario";
 
 export class PrismaUserRepository implements IUserRepository {
     constructor(private prisma: PrismaClient){}

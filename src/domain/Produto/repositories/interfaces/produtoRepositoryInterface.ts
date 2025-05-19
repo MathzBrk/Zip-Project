@@ -1,5 +1,5 @@
 import { Produtos } from "@prisma/client";
-import { ProductResponse, Produto } from "../../../domain/entities/produto";
+import { ProductResponse, Produto } from "../../../domain/Produto/entities/produto";
 
 export interface IProdutoRepository {
   cadastrar(tenantId: string, dados: Produto): Promise<Produto>;
