@@ -1,10 +1,10 @@
 import { UserUseCases } from "./interfaces/userUseCases";
-import { IUserRepository } from "../../repositories/Usuario/interfaces/userRepositoryMethods";
+import { IUserRepository } from "../../domain/Usuario/repositories/interfaces/userRepositoryMethods";
 import { IUserValidator } from "./validators/interfaces/iUserValidator";
-import { DadosCadastroUsuario, Usuario, UsuarioResponse } from "../../domain/entities/usuario";
-import { Senha } from "../../domain/entities/senha";
-import { Email } from "../../domain/entities/email";
+import { Senha } from "../../domain/Usuario/entities/senha";
+import { Email } from "../../domain/Usuario/entities/email";
 import { UsuarioNotFound } from "./errors/usuarioNotFound";
+import { DadosCadastroUsuario, Usuario, UsuarioResponse } from "../../domain/Usuario/entities/usuario";
 
 export class UserService implements UserUseCases {
     constructor(private userRepository: IUserRepository, private userValidator: IUserValidator) {}

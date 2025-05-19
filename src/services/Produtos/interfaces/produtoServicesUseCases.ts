@@ -1,4 +1,4 @@
-import { DadosCadastroProduto, ProductResponse } from "../../../domain/entities/produto";
+import { DadosCadastroProduto, ProductResponse } from "../../../domain/Produto/entities/produto";
 
 export interface ProdutoServicesUseCases {
     consultarProdutos(userId: string): Promise<ProductResponse[]>;

@@ -1,4 +1,4 @@
-import type { DadosCadastroProduto } from "../../../domain/entities/produto";
+import type { DadosCadastroProduto } from "../../../domain/Produto/entities/produto";
 import type { IProdutoValidator } from "./interfaces/IProdutoValidator";
 
 export class ProdutoValidator implements IProdutoValidator {
