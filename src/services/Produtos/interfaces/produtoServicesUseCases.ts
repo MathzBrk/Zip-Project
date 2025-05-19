@@ -1,10 +1,10 @@
-import { DadosCadastroProduto, ProductResponse } from "../../../libs/entities/produto";
+import { DadosCadastroProduto, ProductResponse } from "../../../domain/entities/produto";
 
 export interface ProdutoServicesUseCases {
-    consultarProdutos(): Promise<ProductResponse[]>;
-    cadastrarProduto(dados: DadosCadastroProduto): Promise<ProductResponse>;
-    excluirProduto(produtoId: string): Promise<boolean>;
-    consultarProduto(produtoId: string): Promise<ProductResponse>;
-    diminuirQuantidadeDoEstoque(productId: string, quantidade: number): Promise<void>;
-    aumentarQuantidadeDoEstoque(productId: string, quantidade: number): Promise<void>;
+    consultarProdutos(userId: string): Promise<ProductResponse[]>;
+    cadastrarProduto(userId: string, dados: DadosCadastroProduto): Promise<ProductResponse>;
+    excluirProduto(userId: string, produtoId: string): Promise<boolean>;
+    consultarProduto(userId: string, produtoId: string): Promise<ProductResponse>;
+    diminuirQuantidadeDoEstoque(userId: string, productId: string, quantidade: number): Promise<void>;
+    aumentarQuantidadeDoEstoque(userId: string, productId: string, quantidade: number): Promise<void>;
 }

@@ -1,10 +1,10 @@
 import { Produtos } from "@prisma/client";
-import { ProductResponse, Produto } from "../../../libs/entities/produto";
+import { ProductResponse, Produto } from "../../../domain/entities/produto";
 
 export interface IProdutoRepository {
-  cadastrar(dados: Produto): Promise<Produto>;
-  encontrarPorId(id: string): Promise<Produto | null>;
-  listarTodos(): Promise<Produto[]>;
-  deletar(id: string): Promise<Produto>;
-  atualizar(produto: Produto): Promise<void>;
+  cadastrar(tenantId: string, dados: Produto): Promise<Produto>;
+  encontrarPorId(tenantId: string, id: string): Promise<Produto | null>;
+  listarTodos(tenantId: string): Promise<Produto[]>;
+  deletar(tenantId: string, id: string): Promise<Produto>;
+  atualizar(tenantId: string, produto: Produto): Promise<void>;
 }

@@ -1,16 +1,17 @@
 import { PrismaClient } from "@prisma/client";
-import { DadosCadastroProduto, ProductResponse, Produto } from "../../libs/entities/produto";
+import { Produto } from "../../domain/entities/produto";
 import { IProdutoRepository } from "./interfaces/produtoRepositoryInterface";
 
 export class ProdutoRepository implements IProdutoRepository {
     constructor(private prisma: PrismaClient) {}
 
-    async cadastrar(produto: Produto): Promise<Produto> {
+    async cadastrar(tenantId: string, produto: Produto): Promise<Produto> {
         const produtoSalvo = await this.prisma.produtos.create({
             data: {
                 nome: produto.getNome(),
                 preco: produto.getPreco(),
                 quantidadeEstoque: produto.getQuantidadeEstoque(),
+                tenantId
             },
         });
 
@@ -19,10 +20,11 @@ export class ProdutoRepository implements IProdutoRepository {
         return produtoDominio;
     }
 
-    async deletar(id: string): Promise<Produto> {
+    async deletar(tenantId: string, id: string): Promise<Produto> {
         const produtoExcluido = await this.prisma.produtos.delete({
             where: {
-                id: id
+                id,
+                tenantId
             }
         });
 
@@ -32,31 +34,37 @@ export class ProdutoRepository implements IProdutoRepository {
         return produtoDominio;
     }
 
-    async encontrarPorId(id: string): Promise<Produto> {
+    async encontrarPorId(tenantId: string, id: string): Promise<Produto> {
         const produtoASerProcurado = await this.prisma.produtos.findUnique({
             where: {
-                id
+                id,
+                tenantId
             }
         })
 
         return new Produto(produtoASerProcurado.nome,produtoASerProcurado.preco, produtoASerProcurado.quantidadeEstoque, produtoASerProcurado.id);
     }
 
-    async listarTodos(): Promise<Produto[]> {
-        return (await this.prisma.produtos.findMany()).map((produto) => {
+    async listarTodos(tenantId: string): Promise<Produto[]> {
+        return (await this.prisma.produtos.findMany({
+            where: {
+                tenantId
+            }
+        })).map((produto) => {
             return new Produto(produto.nome, produto.preco, produto.quantidadeEstoque, produto.id)
         });
     }
 
-    async atualizar(produto: Produto): Promise<void> {
+    async atualizar(tenantId: string, produto: Produto): Promise<void> {
         await this.prisma.produtos.update({
             where: {
-                id: produto.getId()
+                id: produto.getId(),
+                tenantId
             },
             data: {
                 nome: produto.getNome(),
                 preco: produto.getPreco(),
-                quantidadeEstoque: produto.getQuantidadeEstoque()
+                quantidadeEstoque: produto.getQuantidadeEstoque(),
             }
         })
     }

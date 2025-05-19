@@ -5,11 +5,15 @@ export class Email {
         this.email = email;
     }
 
-    public static create(email: string): Email | Error {
+    public static create(email: string): Email {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(email)) {
-            return new Error('Email inválido');
+            throw new Error('Email inválido');
         }
         return new Email(email);
+    }
+
+    public getEmail(): string {
+        return this.email;
     }
 }
