@@ -1,5 +1,4 @@
-import { v4 as uuid } from 'uuid';
-import { Endereco } from './endereco';
+import { Produto } from '../../Produto/entities/produto';
 
 export enum FormaDePagamento {
   PIX = 'PIX',
@@ -15,45 +14,58 @@ interface Client {
     endereco?: Endereco;
 }
 
-interface CreatePedidoProps {
-  valor: number;
+interface Endereco {
+
+}
+
+export interface DadosCadastroPedido {
+  produtos: Produto[];
   formaDePagamento: FormaDePagamento;
   client: Client;
 }
 
+export interface PedidoResponse {
+  id: string;
+  valorTotal: number;
+  nomeDoCliente: string;
+  formaDePagamento: string;
+}
+
 export class Pedido {
-  private readonly id: string;
-  private valor: number;
+  private readonly id?: string;
+  private valorTotal: number;
   private formaDePagamento: FormaDePagamento;
   private readonly client: Client;
   private readonly data: string;
+  private produtos: Produto[];
 
   private constructor(
-    valor: number,
     formaDePagamento: FormaDePagamento,
     client: Client,
+    produtos: Produto[]
   ) {
     
-    this.id = uuid();
-    this.setValor(valor);
     this.setFormaDePagamento(formaDePagamento);
     this.client = client;
     this.data = new Date().toISOString();
+    this.produtos = produtos;
+    this.definirValorTotal();
   }
 
-  public static create(props: CreatePedidoProps): Pedido {
+  public static create(props: DadosCadastroPedido): Pedido {
     return new Pedido(
-      props.valor,
       props.formaDePagamento,
       props.client,
+      props.produtos
     );
   }
 
-  private setValor(valor: number) {
-    if (valor <= 0) {
-      throw new Error("Valor do pedido deve ser maior que zero.");
-    }
-    this.valor = valor;
+  private definirValorTotal() {
+    const valorTotal = this.produtos.reduce((valor, produto) => {
+      return produto.getPreco() + valor;
+    }, 0)
+
+    this.valorTotal = valorTotal;
   }
 
   private setFormaDePagamento(formaDePagamento: FormaDePagamento) {
@@ -67,8 +79,8 @@ export class Pedido {
     return this.id;
   }
 
-  public getValor(): number {
-    return this.valor;
+  public getValorTotal(): number {
+    return this.valorTotal;
   }
 
   public getFormaDePagamento(): FormaDePagamento {
@@ -77,6 +89,10 @@ export class Pedido {
 
   public getClient(): Client {
     return this.client;
+  }
+
+  public getClietName(): string {
+    return this.client.nome;
   }
 
   public getData(): string {

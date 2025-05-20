@@ -1,3 +1,7 @@
+export interface IPagamentoPixProvider {
+    gerarQrCodePix(token: string, dados: RealizarPagamentoPix): Promise<PixResponse>;
+}
+
 export interface RealizarPagamentoPix {
     amount: number;
     expiresIn?: number;
