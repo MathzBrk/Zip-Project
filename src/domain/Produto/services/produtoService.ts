@@ -1,8 +1,8 @@
-import { DadosCadastroProduto, ProductResponse, Produto } from "../../domain/Produto/entities/produto";
+import { DadosCadastroProduto, ProductResponse, Produto } from "../entities/produto";
 import { ProdutoServicesUseCases } from "./interfaces/produtoServicesUseCases";
 import { IProdutoValidator } from "./validators/interfaces/IProdutoValidator";
 import { ProdutoNotFoundError } from "./errors/produtoNotFoundError";
-import { IProdutoRepository } from "../../domain/Produto/repositories/interfaces/produtoRepositoryInterface";
+import { IProdutoRepository } from "../repositories/interfaces/produtoRepositoryInterface";
 
 export class ProdutoService implements ProdutoServicesUseCases{
     constructor(
