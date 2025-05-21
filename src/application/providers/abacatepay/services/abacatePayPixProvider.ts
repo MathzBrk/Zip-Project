@@ -3,8 +3,8 @@ import { ABACATE_PAY_API_URL } from "../const/abacate";
 import { IPagamentoPixProvider, PixResponse, RealizarPagamentoPix } from "../../interfaces/iPagamentoPixProvider";
 
 export class AbacatePayPixProvider implements IPagamentoPixProvider {
+
     async gerarQrCodePix(
-        token: string,
         { amount, description, expiresIn }: RealizarPagamentoPix,
     ): Promise<PixResponse> {
         try {
@@ -18,7 +18,7 @@ export class AbacatePayPixProvider implements IPagamentoPixProvider {
                 },
                 {
                     headers: {
-                        Authorization: `Bearer ${token}`,
+                        Authorization: `Bearer ${process.env.ABACATE_PAY_API_TOKEN}`,
                         "Content-Type": "application/json",
                     },
                 },
@@ -38,5 +38,9 @@ export class AbacatePayPixProvider implements IPagamentoPixProvider {
         } catch (error) {
             throw new Error(`Erro ao gerar o QR Code: ${error}`);
         }
+    }
+
+    simularPagamento(idPix: string): Promise<boolean> {
+        throw new Error("Method not implemented.");
     }
 }

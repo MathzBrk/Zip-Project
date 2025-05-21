@@ -1,4 +1,5 @@
 import { Produto } from '../../Produto/entities/produto';
+import { v4 as uuidv4 } from 'uuid';
 
 export enum FormaDePagamento {
   PIX = 'PIX',
@@ -10,18 +11,25 @@ export enum FormaDePagamento {
 interface Client {
     id: string;
     nome: string;
-    vaiBuscarNoLocal?: boolean
+    telefone: string;
     endereco?: Endereco;
 }
 
 interface Endereco {
-
+    rua: string;
+    numero: string;
+    complemento?: string;
 }
 
 export interface DadosCadastroPedido {
   produtos: Produto[];
   formaDePagamento: FormaDePagamento;
-  client: Client;
+  telefoneDoCliente: string;
+  nomeDoCliente: string;
+  vaiBuscarNoLocal?: boolean;
+  rua?: string;
+  numero?: string;
+  complemento?: string;
 }
 
 export interface PedidoResponse {
@@ -55,7 +63,16 @@ export class Pedido {
   public static create(props: DadosCadastroPedido): Pedido {
     return new Pedido(
       props.formaDePagamento,
-      props.client,
+      {
+        id: uuidv4(),
+        nome: props.nomeDoCliente,
+        telefone: props.telefoneDoCliente,
+        endereco: {
+          rua: props.rua,
+          numero: props.numero,
+          complemento: props.complemento
+        }
+      },
       props.produtos
     );
   }

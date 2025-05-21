@@ -1,5 +1,6 @@
 export interface IPagamentoPixProvider {
-    gerarQrCodePix(token: string, dados: RealizarPagamentoPix): Promise<PixResponse>;
+    gerarQrCodePix(dados: RealizarPagamentoPix): Promise<PixResponse>;
+    simularPagamento(idPix: string): Promise<boolean>;
 }
 
 export interface RealizarPagamentoPix {

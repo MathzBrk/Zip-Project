@@ -1,4 +1,3 @@
-import { IPagamentoPixProvider } from "../../../infra/providers/interfaces/iPagamentoPixProvider";
 import { DadosCadastroPedido, Pedido, PedidoResponse } from "../entities/pedido";
 import { IPedidoRepository } from "../repositories/interfaces/iPedidoRepository";
 import { PedidoNotFound } from "./errors/pedidoNotFound";
@@ -7,10 +6,10 @@ import { IPedidoValidator } from "./validators/interfaces/iPedidoValidator";
 
 export class PedidoService implements IPedidoService {
 
-    constructor(private pedidoRepository: IPedidoRepository, private processadorPagamentoPix: IPagamentoPixProvider, private pedidoValidator: IPedidoValidator){}
+    constructor(private pedidoRepository: IPedidoRepository, private pedidoValidator: IPedidoValidator){}
 
     async processarPedido(tenantId: string, dados: DadosCadastroPedido): Promise<PedidoResponse> {
-        await this.pedidoValidator.validarPedido(dados);
+        this.pedidoValidator.validarPedido(dados);
 
         const pedido = Pedido.create(dados);
 
